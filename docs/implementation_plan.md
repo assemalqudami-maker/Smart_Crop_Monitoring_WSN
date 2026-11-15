@@ -36,4 +36,10 @@ Keep the total simulated time, node population, traffic assumptions, channel mod
 
 ## Current gate
 
-Gate 0: PASSED (repository initialized). Gate 1: PASSED (GitHub Actions run 43663722934; 30 generated and 30 delivered packets on wired smoke network). Gate 2: IN PROGRESS (official INET IEEE 802.15.4 showcase CI; not complete ZigBee).
+Gate 0: PASSED (repository initialized).
+Gate 1: PASSED (GitHub Actions run 43663722934; 30 generated and 30 delivered packets on a **wired** smoke network).
+Gate 2: IN PROGRESS: official INET 4.6 / IEEE 802.15.4 radio showcase build and crop-radio validation (see GitHub Actions `inet-radio.yml`). There is NO validated ZigBee NWK stack yet.
+Gate 3/4: DESIGN FILES PRESENT; static layout validation PASSED in run 43664678667: 12 sensors, one sink, link lengths <= 50m, loop-free routes, maximum five planned hops in both designs. A real geographic map and radio range tests are NOT complete.
+Gate 5/6: experiments and radio PDR/delay/energy results NOT YET VERIFIED.
+Metrics parser: 3 synthetic-fixture unit tests PASSED in run 43664678667 (these fixture counts are NOT experiment measurements).
+
