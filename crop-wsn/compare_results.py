@@ -15,6 +15,15 @@ from analyze_results import analyze
 def compare(initial_file: Path, optimized_file: Path):
     initial = analyze(initial_file, require_energy=True)
     optimized = analyze(optimized_file, require_energy=True)
+    # The full 930-second simulation must yield FOUR samples per source
+    # (first at 1–5s and then every 300s). Short diagnostic runs are rejected.
+    expected = {f"sensor[{i}]": 4 for i in range(12)}
+    for scenario, summary in (("Initial", initial), ("Optimized", optimized)):
+        counts = summary["generated_packets_per_sensor"]
+        if counts != expected:
+            raise ValueError(f"{scenario}: expected 4 telemetry packets per sensor in the full 930-second trial; got {counts}")
+        if summary["average_delay_ms"] is None:
+            raise ValueError(f"{scenario}: no received data or delay data to compare")
     result = []
     for key, label, unit, better in [
         ("packet_delivery_ratio_percent", "Packet Delivery Ratio", "%", "higher"),

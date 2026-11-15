@@ -130,6 +130,7 @@ def analyze(path: Path, *, require_energy: bool = False):
         "source_file": str(path),
         "sensors": N,
         "generated_packets": generated,
+        "generated_packets_per_sensor": {f"sensor[{i}]": int(sent[i]) for i in range(N)},
         "delivered_packets": delivered,
         "packet_delivery_ratio_percent": 100 * delivered / generated,
         "average_delay_ms": delay_ms,
