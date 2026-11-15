@@ -47,4 +47,5 @@ jobs:
           echo "== EXTRACT MAC-LEVEL RELAY COUNTERS =="
           echo "== DIRECT ANALYSIS ATTEMPT =="
           python3 crop-wsn/inspect_legacy_artifact.py "$CROP_FILE"
+          python3 crop-wsn/verify_multihop.py "$CROP_FILE" --scenario Initial
           python3 crop-wsn/analyze_results.py "$CROP_FILE" || true
