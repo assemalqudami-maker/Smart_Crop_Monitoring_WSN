@@ -9,6 +9,10 @@ on:
       - 'crop-wsn/routes-*.xml'
       - 'crop-wsn/analyze_results.py'
       - 'crop-wsn/compare_results.py'
+      - 'crop-wsn/CropTelemetryModules.cc'
+      - 'crop-wsn/CropTelemetryModules.ned'
+      - 'crop-wsn/verify_telemetry.py'
+      - 'crop-wsn/verify_multihop.py'
       - '.github/workflows/inet-radio.yml'
   workflow_dispatch:
 
