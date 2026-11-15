@@ -3,7 +3,9 @@
 
 These are static consistency checks, NOT RF or packet-delivery measurements.
 """
+import configparser
 import csv
+import re
 import math
 import sys
 import xml.etree.ElementTree as ET
@@ -12,7 +14,27 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 MAX_RANGE = 50.0
 
+def verify_simulator_configuration():
+    ini = configparser.ConfigParser(interpolation=None)
+    ini.optionxform = str
+    if not ini.read(ROOT / "omnetpp.ini", encoding="utf-8"):
+        raise AssertionError("Missing OMNeT++ INI")
+    general = ini["General"]
+    assert general["network"] == "wsn.crop.FarmNetwork"
+    assert general["*.sensor[*].app[0].sendInterval"] == "300s", "5-minute sensing period changed"
+    assert general["*.radioMedium.mediumLimitCache.maxCommunicationRange"] == "50m", "communication bound changed"
+    assert general["*.sensor[*].forwarding"] == "true", "relay forwarding disabled"
+    assert general["*.sensor[*].numApps"] == "1"
+    assert general["*.sink.numApps"] == "1"
+    ned = (ROOT / "FarmNetwork.ned").read_text(encoding="utf-8")
+    assert re.search(r"\\bsensor\\[12\\]\\s*:\\s*SensorNode", ned), "network must have 12 sensors"
+    assert re.search(r"\\bsink\\s*:\\s*SensorNode", ned), "sink module missing"
+    print("PASS: NED count and INI traffic, forwarding and 50m cap agree")
+    return ini
+
+
 def main():
+    ini = verify_simulator_configuration()
     with (ROOT / "topology.csv").open(newline="", encoding="utf-8") as fp:
         rows = list(csv.DictReader(fp))
     if len(rows) != 26:
@@ -20,6 +42,13 @@ def main():
     paths = {}
     for scenario, xmlfile in (("Initial", "routes-initial.xml"), ("Optimized", "routes-optimized.xml")):
         scoped = {r["node"]: r for r in rows if r["scenario"] == scenario}
+        section = ini[scenario]
+        for idx in range(12):
+            expected = scoped[f"sensor[{idx}]"]
+            for axis, col in (("X", "x_m"), ("Y", "y_m")):
+                actual = section[f"*.sensor[{idx}].mobility.initial{axis}"]
+                if actual != f"{expected[col]}m":
+                    raise AssertionError(f"{scenario}: sensor[{idx}] coordinate {axis} mismatch: {actual}")
         sensors = {f"sensor[{i}]" for i in range(12)}
         if set(scoped) != sensors | {"sink"}:
             raise AssertionError(f"{scenario}: missing/duplicate sensor or sink nodes")
