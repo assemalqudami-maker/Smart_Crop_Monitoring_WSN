@@ -7,8 +7,8 @@ import re
 import shlex
 import sys
 from pathlib import Path
-
-SRC_RE = re.compile(r"\\.sensor\\[(\\d+)\\]\\.app\\[0\\]$")
+SRC_RE = re.compile(r"\.sensor\[(\d+)\]\.app\[0\]$")
+SINK_RE = re.compile(r"\.sink\.app\[0\]$")
 SINK_RE = re.compile(r"\\.sink\\.app\\[0\\]$")
 
 def load(path):
