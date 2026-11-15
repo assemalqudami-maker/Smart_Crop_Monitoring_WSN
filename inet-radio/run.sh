@@ -38,12 +38,19 @@ echo "NOTE: this does not prove 50m range, multi-hop or complete ZigBee"
 CROP_DIR="/root/models/crop-wsn"
 cd "$CROP_DIR"
 mkdir -p results
+# Complete 930-second run: first sample in 1-5 s, then at +300, +600, +900 s.
+# Never use a short diagnostic run to generate the final comparative results.
 for cfg in Initial Optimized; do
-  echo "Running crop WSN: $cfg (30 simulated seconds for initial bring-up)"
+  echo "Running crop WSN: $cfg (FULL 930 simulated seconds)"
   inet --release -u Cmdenv -n "$CROP_DIR" -c "$cfg" -f omnetpp.ini \
-    --sim-time-limit=30s \
+    --sim-time-limit=930s \
     --output-scalar-file="$CROP_DIR/results/${cfg}.sca" \
     --output-vector-file="$CROP_DIR/results/${cfg}.vec"
-  python3 analyze_results.py "$CROP_DIR/results/${cfg}.sca"
+  python3 analyze_results.py "$CROP_DIR/results/${cfg}.sca" \
+    --require-energy --output "$CROP_DIR/results/${cfg}-metrics.json"
 done
-
+python3 compare_results.py "$CROP_DIR/results/Initial.sca" \
+  "$CROP_DIR/results/Optimized.sca" \
+  --out "$CROP_DIR/results/validated-comparison.csv"
+echo "PASS: two real full-length IEEE 802.15.4 farm trials and verified comparison"
+echo "NOTE: ZigBee NWK, effective radio-boundary calibration, and relay-hop verification remain separate gates"
