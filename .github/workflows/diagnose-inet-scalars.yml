@@ -35,6 +35,12 @@ jobs:
           grep '^scalar ' "$CROP_FILE" | head -70 || true
           echo "== APP PACKET COUNTERS AND DELAY =="
           grep -E '^(scalar|statistic) .*\.(app|udp|energyStorage|ipv4)' "$CROP_FILE" | grep -E '(packetSent|packetReceived|Delay|Capacity|drop|sent|received)' | head -100 || true
+          echo "== CROP APP PACKET COUNTS ==" 
+          grep -E '^scalar FarmNetwork\\.(sink|sensor\\[[0-9]+\\])\\.app\\[0\\] packet(Sent|Received):count ' "$CROP_FILE" || true
+          echo "== REAL HOP-LEVEL INDICATORS (INTERMEDIATE IPV4 FORWARDING) =="
+          grep -Ei '^(scalar|statistic) FarmNetwork\\.sensor\\[[0-9]+\\]\\.ipv4\\.ip .*forward' "$CROP_FILE" | head -80 || true
+          echo "== REAL END-TO-END DELAY HISTOGRAM =="
+          grep -A 15 '^statistic FarmNetwork.sink.app\\[0\\] endToEndDelay:histogram' "$CROP_FILE" | head -18 || true
           echo "== COUNTS =="
           grep -c '^scalar ' "$CROP_FILE" || true
           grep -c '^statistic ' "$CROP_FILE" || true
