@@ -7,6 +7,10 @@ on:
       - '.github/workflows/inet-radio.yml'
   workflow_dispatch:
 
+concurrency:
+  group: inet-radio-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -14,7 +18,7 @@ jobs:
   radio:
     name: Compile INET 4.6 and run official 802.15.4 example
     runs-on: ubuntu-24.04
-    timeout-minutes: 50
+    timeout-minutes: 75
     steps:
       - uses: actions/checkout@v4
       - name: Validate geometry and routing (static)
