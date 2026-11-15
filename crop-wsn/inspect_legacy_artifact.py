@@ -27,6 +27,11 @@ def main():
     print("Source node count:",len(sent),"generated:",total,"sink received:",sink)
     print("Packet delivery ratio:",round(100*sink/total,4) if sink is not None and total else "unavailable")
     print("Sink delay statistics:",delay)
+    mac_tx=[(m,int(v)) for m,n,v in scalars if ".sensor[" in m and ".wlan[0].mac" in m and n=="nbTxFrames"]
+    mac_rx=[(m,int(v)) for m,n,v in scalars if ".sensor[" in m and ".wlan[0].mac" in m and n=="nbRxFrames"]
+    print("Per-relay MAC data-frame transmissions:",mac_tx)
+    print("Per-relay MAC data-frame receptions:",mac_rx)
+    print("Note: frame counts may include retransmissions; packet-path proof needs dedicated trace.")
     print("Selected forwarding/relay scalar counters (first 40):")
     for m,n,v in forward[:40]: print(m,n,v)
     print("ENERGY INVALID FOR FINAL REPORT: original ideal battery model; negative residual values")
