@@ -4,7 +4,6 @@ on:
   push:
     paths:
       - 'inet-radio/**'
-      - 'crop-wsn/**'
       - '.github/workflows/inet-radio.yml'
   workflow_dispatch:
 
