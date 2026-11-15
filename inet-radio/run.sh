@@ -63,12 +63,12 @@ for distance in 49 50 51; do
   expected=1
   if [[ "$distance" -eq 51 ]]; then expected=0; fi
   echo "Testing IEEE 802.15.4 direct-link boundary at ${distance}m"
-  inet --release -l "$CUSTOM_LIB_BASE" -u Cmdenv -n "$CROP_DIR:$UPSTREAM_DIR/src" -c "$cfg" -f omnetpp.ini \\
-    --sim-time-limit=30s \\
-    --output-scalar-file="$CROP_DIR/results/${cfg}.sca" \\
+  inet --release -l "$CUSTOM_LIB_BASE" -u Cmdenv -n "$CROP_DIR:$UPSTREAM_DIR/src" -c "$cfg" -f omnetpp.ini \
+    --sim-time-limit=30s \
+    --output-scalar-file="$CROP_DIR/results/${cfg}.sca" \
     --output-vector-file="$CROP_DIR/results/${cfg}.vec"
-  python3 verify_range.py "$CROP_DIR/results/${cfg}.sca" \\
-    --distance "$distance" --expected-delivered "$expected" \\
+  python3 verify_range.py "$CROP_DIR/results/${cfg}.sca" \
+    --distance "$distance" --expected-delivered "$expected" \
     --output "$CROP_DIR/results/${cfg}-range.json"
 done
 # Complete 930-second run: first sample in 1-5 s, then at +300, +600, +900 s.

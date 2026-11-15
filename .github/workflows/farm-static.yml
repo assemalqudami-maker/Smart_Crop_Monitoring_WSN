@@ -20,6 +20,8 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
+      - name: Check shell runner syntax and line continuations
+        run: bash -n inet-radio/run.sh
       - name: Check 12 sensor nodes, 1 sink, loop-free next hops and 50m links
         run: python3 crop-wsn/verify_layout.py
       - name: Validate result parser against synthetic test fixtures (not measurements)
