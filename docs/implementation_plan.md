@@ -36,4 +36,4 @@ Keep the total simulated time, node population, traffic assumptions, channel mod
 
 ## Current gate
 
-Gate 0: initialized. Gate 1: CI execution required; target OMNeT++ 6.3.0 / INET 4.6.0, subject to verification.
+Gate 0: PASSED (repository initialized). Gate 1: PASSED (GitHub Actions run 43663722934; 30 generated and 30 delivered packets on wired smoke network). Gate 2: IN PROGRESS (official INET IEEE 802.15.4 showcase CI; not complete ZigBee).
