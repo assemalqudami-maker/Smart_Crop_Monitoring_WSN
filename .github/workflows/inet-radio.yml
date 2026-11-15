@@ -41,5 +41,7 @@ jobs:
             inet-radio/results/*.vec
             crop-wsn/results/*.sca
             crop-wsn/results/*.vec
+            crop-wsn/results/*.json
+            crop-wsn/results/*.csv
           if-no-files-found: warn
           retention-days: 14
