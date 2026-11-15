@@ -48,6 +48,8 @@ for cfg in Initial Optimized; do
     --output-vector-file="$CROP_DIR/results/${cfg}.vec"
   python3 analyze_results.py "$CROP_DIR/results/${cfg}.sca" \
     --require-energy --output "$CROP_DIR/results/${cfg}-metrics.json"
+  python3 verify_multihop.py "$CROP_DIR/results/${cfg}.sca" \\
+    --scenario "$cfg" --output "$CROP_DIR/results/${cfg}-multihop.json"
 done
 python3 compare_results.py "$CROP_DIR/results/Initial.sca" \
   "$CROP_DIR/results/Optimized.sca" \

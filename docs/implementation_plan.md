@@ -64,3 +64,14 @@ Metrics parser: 3 synthetic-fixture unit tests PASSED in run 43664678667 (these 
 - `analyze_results.py` now exposes generated packet counts per sensor. `compare_results.py` rejects a final comparison unless **each of the twelve sensors produced four recorded readings** in *both* 930-second runs (initial sample at 1–5s, then +300s, +600s, +900s), with measured delay and finite-energy values.
 - This check makes a one-cycle 30-second smoke test insufficient for the final report. Improvement may be zero or negative; no metric will be changed to imply success.
 - Full-run trial [GitHub Actions 43666881469](https://github.com/assemalqudami-maker/Smart_Crop_Monitoring_WSN/actions/runs/43666881469) was *in progress* at the time of verification. The passing synthetic-fixture test suite must not be mistaken for a passing 930-second simulation.
+
+
+## Verified full radio experiment — 15 November 2026
+
+- [GitHub Actions run 43668567880](https://github.com/assemalqudami-maker/Smart_Crop_Monitoring_WSN/actions/runs/43668567880) completed successfully after enabling NodeStatus on all 13 nodes.
+- Both Initial and Optimized completed 930 simulated seconds. Each of 12 sensors generated four packets; sink received 48/48 in each scenario.
+- Measured PDR: 100% both; modeled radio energy: 0.315161 J Initial vs 0.301669 J Optimized (4.2812% lower); average delay: 12.568406 ms vs 11.560303 ms (8.0209% lower).
+- Raw artifacts: [artifact 14144120600](https://github.com/assemalqudami-maker/Smart_Crop_Monitoring_WSN/actions/runs/43668567880/artifacts/14144120600). Detailed interpretation in `docs/verified_full_experiment.md`.
+- Independent full-run MAC counter audit performed on raw .sca files for both scenarios: expected and measured aggregate per-node MAC TX/RX counts match, sink MAC RX = 48, no missed ACKs or dropped frames. Reproduction is added to the run script.
+- Energy is modeled radio-state energy only (not CPU/sensor-board power). Current upper layers are manually routed IPv4, not a ZigBee NWK/APS stack. Generic telemetry still needs actual temperature/humidity/soil fields.
+- Outstanding: implement/obtain ZigBee-compatible NWK model, encode crop readings, empirically validate 50m boundary, import a real map and capture screenshots, prepare Word/PDF report, 5–6 slides and 5-minute demo.

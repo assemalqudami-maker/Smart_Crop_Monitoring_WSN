@@ -102,10 +102,15 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("scalar_file",type=Path)
     parser.add_argument("--scenario",default="Initial",choices=["Initial","Optimized"])
+    parser.add_argument("--output",type=Path,default=None)
     args=parser.parse_args()
     try:
         report=validate_trace(args.scalar_file,args.scenario)
-        print(json.dumps(report,indent=2))
+        payload=json.dumps(report,indent=2)
+        print(payload)
+        if args.output:
+            args.output.parent.mkdir(parents=True,exist_ok=True)
+            args.output.write_text(payload+"\\n",encoding="utf-8")
         print(f"PASS: measured aggregate multi-hop forwarding for {args.scenario}")
     except (ValueError,OSError) as exc:
         print("FAIL:",exc,file=sys.stderr)
