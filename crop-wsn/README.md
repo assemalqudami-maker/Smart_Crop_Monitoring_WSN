@@ -28,3 +28,12 @@ Use Qtenv for screenshots by removing `-u Cmdenv` and running from an environmen
 
 ## Evidence and quality gates
 The `.sca` files are expected to contain measured packet counts, the UDP sink's delay histogram, and 13 residual-energy values from `SimpleEpEnergyStorage`. Each node begins at **1000 J**; `analyze_results.py` computes total energy used as `13 × 1000 J − sum(residual capacities)` only if all 13 values exist. The CLI `--require-energy` rejects incomplete energy evidence. This is a model-based energy measurement, not a laboratory battery test. The 50 m communication boundary still needs empirical validation.
+
+## Before/after comparison
+When **both full-length runs have finished and all 13 energy capacities are recorded**, calculate a submission-ready table with:
+
+```bash
+python3 compare_results.py results/Initial.sca results/Optimized.sca --out results/validated-comparison.csv
+```
+
+The comparison command **fails** rather than inventing numbers when measured PDR, delay or energy are absent. GitHub's first 30-second bring-up should never be substituted for the required full 930-second experiment. Before submitting, also verify that multi-hop forwarding occurred in packet/event traces rather than only in static route files.
