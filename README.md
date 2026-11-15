@@ -1,7 +1,7 @@
 # Smart Crop Monitoring using Wireless Sensor Networks
 
 **Course:** IT484 — Wireless Sensor Networks  
-**Simulation stack (target):** OMNeT++ 6.4.0 + INET 4.7.0  
+**Simulation stack (target):** OMNeT++ 6.3.0 + INET 4.6.0  
 **Project deadline:** 30 November 2026, 23:59 (as stated in the course brief)
 
 ## Project objective
