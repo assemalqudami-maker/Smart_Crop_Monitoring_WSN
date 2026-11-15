@@ -8,7 +8,7 @@
 **/Makefile
 **/Makefile.vc
 **/out/
-**/smoke
+/smoke/smoke
 **/*.o
 **/*.d
 **/.oppbuildspec
