@@ -53,3 +53,7 @@ Metrics parser: 3 synthetic-fixture unit tests PASSED in run 43664678667 (these 
 - The full INET radio workflow is still pending a definitive successful run; do not mark Gate 2 or the full wireless/energy experiment as complete until its GitHub Actions artifacts prove it.
 - The current scenario uses `Ieee802154NarrowbandInterface` plus manual IPv4 routes, **not the full ZigBee stack**. Instructor confirmation or a compatible ZigBee model remains a required gate.
 - Required mapped city/landmark screenshot, packet-transmission visualization, full-length before/after radio trials, energy/PDR/delay table, 5-minute demo and formatted report are still outstanding.
+
+- OMNeT++ 6.3 NED parser validation PASSED in GitHub Actions run [43665209805](https://github.com/assemalqudami-maker/Smart_Crop_Monitoring_WSN/actions/runs/43665209805). This validates NED syntax, not dependent INET module resolution or runtime.
+- Stronger cross-file checks verify `FarmNetwork.ned`, `omnetpp.ini`, `topology.csv` and both routing XML files agree on 12 sensors, 1 sink, 300s sample interval, 50m medium cap and initial/optimized coordinates; PASSED in run [43665356064](https://github.com/assemalqudami-maker/Smart_Crop_Monitoring_WSN/actions/runs/43665356064).
+- Radio build concurrency and a longer CI timeout were configured; INET build and real radio metrics remain unverified until its workflow completes successfully.
