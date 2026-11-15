@@ -36,3 +36,17 @@ The full 930-second `Initial` and `Optimized` trial workflow with finite energy 
 3. Confirm multi-hop routing from observable per-hop packet evidence, not solely XML next-hop routes.
 4. Check the ZigBee requirement against the actual implemented stack; IEEE 802.15.4 with IPv4 is not the full ZigBee stack.
 5. Preserve the raw scalar/vector files alongside generated CSV/JSON and simulator version/commit metadata.
+
+## Independent MAC-level relay indicators
+
+A reinspection of the **same raw scalar artifact**, with [GitHub Actions run 43666521951](https://github.com/assemalqudami-maker/Smart_Crop_Monitoring_WSN/actions/runs/43666521951), found the following IEEE 802.15.4 MAC frame counters:
+
+| Sensor | `nbRxFrames` | `nbTxFrames` | Own app messages sent |
+| --- | ---: | ---: | ---: |
+| sensor[0] | 11 | 12 | 1 |
+| sensor[1] | 2 | 3 | 1 |
+| sensor[2] | 1 | 2 | 1 |
+| sensor[4] | 3 | 4 | 1 |
+| sensor[8] | 3 | 4 | 1 |
+
+These frame counts are consistent with intermediate relaying; for example, sensor[0] sent twelve MAC frames while originating only one application packet. This independently supports multi-hop behavior, but the counts alone may include retransmission effects. Packet-level path evidence is still required for definitive per-packet hop attribution.
