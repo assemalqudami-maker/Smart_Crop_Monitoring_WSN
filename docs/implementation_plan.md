@@ -57,3 +57,10 @@ Metrics parser: 3 synthetic-fixture unit tests PASSED in run 43664678667 (these 
 - OMNeT++ 6.3 NED parser validation PASSED in GitHub Actions run [43665209805](https://github.com/assemalqudami-maker/Smart_Crop_Monitoring_WSN/actions/runs/43665209805). This validates NED syntax, not dependent INET module resolution or runtime.
 - Stronger cross-file checks verify `FarmNetwork.ned`, `omnetpp.ini`, `topology.csv` and both routing XML files agree on 12 sensors, 1 sink, 300s sample interval, 50m medium cap and initial/optimized coordinates; PASSED in run [43665356064](https://github.com/assemalqudami-maker/Smart_Crop_Monitoring_WSN/actions/runs/43665356064).
 - Radio build concurrency and a longer CI timeout were configured; INET build and real radio metrics remain unverified until its workflow completes successfully.
+
+## Measurement-integrity gate — 15 November 2026
+
+- Test suite on the updated farm branch: **11/11 tests PASSED** in [GitHub Actions run 43667163368](https://github.com/assemalqudami-maker/Smart_Crop_Monitoring_WSN/actions/runs/43667163368).
+- `analyze_results.py` now exposes generated packet counts per sensor. `compare_results.py` rejects a final comparison unless **each of the twelve sensors produced four recorded readings** in *both* 930-second runs (initial sample at 1–5s, then +300s, +600s, +900s), with measured delay and finite-energy values.
+- This check makes a one-cycle 30-second smoke test insufficient for the final report. Improvement may be zero or negative; no metric will be changed to imply success.
+- Full-run trial [GitHub Actions 43666881469](https://github.com/assemalqudami-maker/Smart_Crop_Monitoring_WSN/actions/runs/43666881469) was *in progress* at the time of verification. The passing synthetic-fixture test suite must not be mistaken for a passing 930-second simulation.
