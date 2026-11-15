@@ -50,3 +50,43 @@ No final report should describe the current model as ZigBee until this gate is r
 - CupCarbon official site: https://www.cupcarbon.com/
 - Simplified third-party NWK research model: https://github.com/Shtrikh17/ZigBee-attacks-model
 - Third-party bundled OMNeT++ project, not yet audited: https://github.com/YuuFii/Simple_Zigbee_Star_Simulation
+
+## Exact IT484 map and protocol requirements
+
+The assignment PDF requires:
+- Import a city map into the WSN simulator and highlight key zones.
+- 10–12 sensor nodes and one sink.
+- 50 m transmission range, ZigBee, and a 5-minute sensing interval.
+- Multi-hop forwarding to the sink, before/after optimization, screenshots, and PDR / energy / average-delay comparison.
+- A 5-minute simulator demo, 5–6 slides, and separate Word and PDF report files using the Blackboard assignment template and Times New Roman.
+- Submission to Blackboard by 30 November 2026 at 23:59; email is not accepted.
+
+## Map integration options
+
+### OMNeT++ route
+OMNeT++ supports a network background image through the NED display string `bgi` tag, for example:
+```ned
+@display("bgb=260,205;bgi=maps/wadi_dhahr,s;bgu=m");
+```
+The image must be placed in the OMNeT++ image search path and its map extent must be aligned to the simulation coordinate system. This is a static map background; it does not automatically import OSM road/building geometry or make those features part of the radio propagation model.
+
+Official manual: https://docs.omnetpp.org/manual/index
+
+### CupCarbon Klaines 8.3 candidate
+The official CupCarbon site currently describes:
+- an OpenStreetMap-based canvas with online OSM or offline map backgrounds;
+- a discrete-event WSN engine with ZigBee, Wi-Fi and LoRa radio choices;
+- interference, energy/battery models and CSV results;
+- SenScript for classical WSN nodes; Python `cup_*` functions are for the separate IoT-node environment;
+- Java 17+ for installation, and Python 3 for IoT scripts.
+
+Official sources:
+- https://www.cupcarbon.com/
+- https://www.cupcarbon.com/help.html
+- https://www.cupcarbon.com/installation.html
+
+This appears to align more directly with the assignment's map and ZigBee requirements than the current INET stack. However, the exact 50 m setting, multi-hop forwarding, energy metrics and reproducible before/after experiment must still be prototyped and verified in CupCarbon before any switch is recommended as final.
+
+## Current recommendation
+
+Do not discard the OMNeT++ work: it provides a working IEEE 802.15.4 PHY/MAC simulation and repeatable performance analysis. But do not call it full ZigBee or claim the map requirement is complete. Keep OMNeT++ as the current baseline while preparing a small CupCarbon WSN pilot to test native map + ZigBee + 12 nodes + 50 m + 5-minute reporting. A final simulator choice should be made only after that pilot demonstrates all required metrics and screenshots.
