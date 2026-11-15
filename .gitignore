@@ -1,0 +1,18 @@
+# OMNeT++ build and generated files
+**/results/
+**/*.sca
+**/*.vec
+**/*.vci
+**/*.elog
+**/*.oppbin
+**/Makefile
+**/Makefile.vc
+**/out/
+**/smoke
+**/*.o
+**/*.d
+**/.oppbuildspec
+**/.nedfolders
+**/.project
+**/.cproject
+.DS_Store
