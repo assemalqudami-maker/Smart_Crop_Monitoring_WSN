@@ -43,3 +43,13 @@ Gate 3/4: DESIGN FILES PRESENT; static layout validation PASSED in run 436646786
 Gate 5/6: experiments and radio PDR/delay/energy results NOT YET VERIFIED.
 Metrics parser: 3 synthetic-fixture unit tests PASSED in run 43664678667 (these fixture counts are NOT experiment measurements).
 
+
+## Implementation update — 15 November 2026
+
+- Reproducible farm graph scenarios created under `crop-wsn/`.
+- Defined finite initial battery capacities (1000 J per simulated node) and guarded measured energy accounting. This is not a physical-device battery measurement.
+- Added strict scalar analyzers and a `compare_results.py` utility that accepts **real Initial/Optimized .sca data only** and rejects missing energy/delay statistics.
+- GitHub Actions run [43665022475](https://github.com/assemalqudami-maker/Smart_Crop_Monitoring_WSN/actions/runs/43665022475) passed layout checks and **7 synthetic-fixture parser unit tests**. Synthetic test values must never be described as measured project results.
+- The full INET radio workflow is still pending a definitive successful run; do not mark Gate 2 or the full wireless/energy experiment as complete until its GitHub Actions artifacts prove it.
+- The current scenario uses `Ieee802154NarrowbandInterface` plus manual IPv4 routes, **not the full ZigBee stack**. Instructor confirmation or a compatible ZigBee model remains a required gate.
+- Required mapped city/landmark screenshot, packet-transmission visualization, full-length before/after radio trials, energy/PDR/delay table, 5-minute demo and formatted report are still outstanding.
