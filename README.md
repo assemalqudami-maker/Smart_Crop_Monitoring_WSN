@@ -15,7 +15,7 @@ The final report will compare *initial* and *optimized* scenarios using:
 
 ## Current implementation state
 
-**Stage 0 — repository initialized.** The simulation and its performance results are **not yet validated**. Follow the staged milestones in `docs/implementation_plan.md` after the first project scaffold is merged.
+**Current status (15 November 2026):** The official INET 4.6 IEEE 802.15.4 showcase has run successfully on GitHub Actions. A short 30-second farm run actually delivered **12/12** application packets (mean delay **12.528 ms**) using the **Initial** scenario. This is **not** the complete final trial or proof of ZigBee; battery energy in that historical short run is invalid because the original ideal storage model was used. The current code configures finite energy storage, strict measurement validation and two 930-second trials, which still need a passing end-to-end workflow. See [measured short-trial evidence](docs/verified_first_wireless_trial.md) and [project plan](docs/implementation_plan.md).
 
 **Important protocol distinction:** IEEE 802.15.4 PHY/MAC (provided by INET) is **not** a complete ZigBee protocol stack. We will explicitly verify the network/routing layers before describing the implementation as ZigBee. No measured numbers will be fabricated.
 
