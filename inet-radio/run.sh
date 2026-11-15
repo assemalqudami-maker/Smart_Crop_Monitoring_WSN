@@ -34,3 +34,16 @@ test -s "$RESULT_DIR/upstream-802154.sca"
 grep -q '^scalar ' "$RESULT_DIR/upstream-802154.sca"
 echo "PASS: upstream INET IEEE 802.15.4 example ran and produced scalar data"
 echo "NOTE: this does not prove 50m range, multi-hop or complete ZigBee"
+
+CROP_DIR="/root/models/crop-wsn"
+cd "$CROP_DIR"
+mkdir -p results
+for cfg in Initial Optimized; do
+  echo "Running crop WSN: $cfg (30 simulated seconds for initial bring-up)"
+  inet --release -u Cmdenv -n "$CROP_DIR" -c "$cfg" -f omnetpp.ini \
+    --sim-time-limit=30s \
+    --output-scalar-file="$CROP_DIR/results/${cfg}.sca" \
+    --output-vector-file="$CROP_DIR/results/${cfg}.vec"
+  python3 analyze_results.py "$CROP_DIR/results/${cfg}.sca"
+done
+

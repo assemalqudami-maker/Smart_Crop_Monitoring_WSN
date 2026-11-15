@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'inet-radio/**'
+      - 'crop-wsn/**'
       - '.github/workflows/inet-radio.yml'
   workflow_dispatch:
 
@@ -17,6 +18,8 @@ jobs:
     timeout-minutes: 50
     steps:
       - uses: actions/checkout@v4
+      - name: Validate geometry and routing (static)
+        run: python3 crop-wsn/verify_layout.py
       - name: Run upstream showcase with official OMNeT++ image
         run: |
           mkdir -p inet-radio/results
@@ -33,5 +36,7 @@ jobs:
           path: |
             inet-radio/results/*.sca
             inet-radio/results/*.vec
+            crop-wsn/results/*.sca
+            crop-wsn/results/*.vec
           if-no-files-found: warn
           retention-days: 14

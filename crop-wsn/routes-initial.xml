@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Explicit directed next-hop routes to sink via IPv4 over 802.15.4 MAC. -->
+<config>
+  <interface hosts="sink" names="wlan0" address="10.0.0.1" netmask="255.255.255.0"/>
+  <interface hosts="sensor[0]" names="wlan0" address="10.0.0.2" netmask="255.255.255.0"/>
+  <interface hosts="sensor[1]" names="wlan0" address="10.0.0.3" netmask="255.255.255.0"/>
+  <interface hosts="sensor[2]" names="wlan0" address="10.0.0.4" netmask="255.255.255.0"/>
+  <interface hosts="sensor[3]" names="wlan0" address="10.0.0.5" netmask="255.255.255.0"/>
+  <interface hosts="sensor[4]" names="wlan0" address="10.0.0.6" netmask="255.255.255.0"/>
+  <interface hosts="sensor[5]" names="wlan0" address="10.0.0.7" netmask="255.255.255.0"/>
+  <interface hosts="sensor[6]" names="wlan0" address="10.0.0.8" netmask="255.255.255.0"/>
+  <interface hosts="sensor[7]" names="wlan0" address="10.0.0.9" netmask="255.255.255.0"/>
+  <interface hosts="sensor[8]" names="wlan0" address="10.0.0.10" netmask="255.255.255.0"/>
+  <interface hosts="sensor[9]" names="wlan0" address="10.0.0.11" netmask="255.255.255.0"/>
+  <interface hosts="sensor[10]" names="wlan0" address="10.0.0.12" netmask="255.255.255.0"/>
+  <interface hosts="sensor[11]" names="wlan0" address="10.0.0.13" netmask="255.255.255.0"/>
+  <wireless interfaces="sink%wlan0 sensor[0]%wlan0 sensor[1]%wlan0 sensor[2]%wlan0 sensor[3]%wlan0 sensor[4]%wlan0 sensor[5]%wlan0 sensor[6]%wlan0 sensor[7]%wlan0 sensor[8]%wlan0 sensor[9]%wlan0 sensor[10]%wlan0 sensor[11]%wlan0"/>
+  <route hosts="sensor[0]" destination="10.0.0.1" netmask="255.255.255.255" gateway="*" interface="wlan0" metric="0"/>
+  <route hosts="sensor[1]" destination="10.0.0.1" netmask="255.255.255.255" gateway="10.0.0.2" interface="wlan0" metric="0"/>
+  <route hosts="sensor[2]" destination="10.0.0.1" netmask="255.255.255.255" gateway="10.0.0.3" interface="wlan0" metric="0"/>
+  <route hosts="sensor[3]" destination="10.0.0.1" netmask="255.255.255.255" gateway="10.0.0.4" interface="wlan0" metric="0"/>
+  <route hosts="sensor[4]" destination="10.0.0.1" netmask="255.255.255.255" gateway="10.0.0.2" interface="wlan0" metric="0"/>
+  <route hosts="sensor[5]" destination="10.0.0.1" netmask="255.255.255.255" gateway="10.0.0.6" interface="wlan0" metric="0"/>
+  <route hosts="sensor[6]" destination="10.0.0.1" netmask="255.255.255.255" gateway="10.0.0.7" interface="wlan0" metric="0"/>
+  <route hosts="sensor[7]" destination="10.0.0.1" netmask="255.255.255.255" gateway="10.0.0.8" interface="wlan0" metric="0"/>
+  <route hosts="sensor[8]" destination="10.0.0.1" netmask="255.255.255.255" gateway="10.0.0.2" interface="wlan0" metric="0"/>
+  <route hosts="sensor[9]" destination="10.0.0.1" netmask="255.255.255.255" gateway="10.0.0.10" interface="wlan0" metric="0"/>
+  <route hosts="sensor[10]" destination="10.0.0.1" netmask="255.255.255.255" gateway="10.0.0.11" interface="wlan0" metric="0"/>
+  <route hosts="sensor[11]" destination="10.0.0.1" netmask="255.255.255.255" gateway="10.0.0.12" interface="wlan0" metric="0"/>
+</config>
