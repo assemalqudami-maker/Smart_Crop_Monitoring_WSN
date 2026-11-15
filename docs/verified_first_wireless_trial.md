@@ -50,3 +50,9 @@ A reinspection of the **same raw scalar artifact**, with [GitHub Actions run 436
 | sensor[8] | 3 | 4 | 1 |
 
 These frame counts are consistent with intermediate relaying; for example, sensor[0] sent twelve MAC frames while originating only one application packet. This independently supports multi-hop behavior, but the counts alone may include retransmission effects. Packet-level path evidence is still required for definitive per-packet hop attribution.
+
+## Confirmed aggregate multi-hop evidence (stronger verification)
+
+Workflow [43666831142](https://github.com/assemalqudami-maker/Smart_Crop_Monitoring_WSN/actions/runs/43666831142) downloaded the **original 30-second `Initial.sca`**, ran `crop-wsn/verify_multihop.py`, and **PASSED** a strict flow accounting check. It independently reconstructed predicted per-relay MAC transmission and reception totals from the route tree and every source's **actually measured** packetSent counter, then compared the predictions to `nbTxFrames` and `nbRxFrames` for all twelve nodes and the sink.
+
+For this trial, all 12 application packets arrived. The per-node aggregate MAC frame counts matched expected forwarding with zero recorded missed ACKs and dropped frames in the checked counters. This is genuine experimental evidence of **aggregate multi-hop forwarding**. It remains distinct from a timestamped, per-packet hop trace and does not prove full ZigBee conformance or exact effective range at 50 m. The historical trial's invalid ideal-battery residual values remain **excluded** from any energy comparison.
