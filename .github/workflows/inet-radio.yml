@@ -4,6 +4,11 @@ on:
   push:
     paths:
       - 'inet-radio/**'
+      - 'crop-wsn/FarmNetwork.ned'
+      - 'crop-wsn/omnetpp.ini'
+      - 'crop-wsn/routes-*.xml'
+      - 'crop-wsn/analyze_results.py'
+      - 'crop-wsn/compare_results.py'
       - '.github/workflows/inet-radio.yml'
   workflow_dispatch:
 

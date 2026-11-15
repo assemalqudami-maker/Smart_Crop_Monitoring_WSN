@@ -26,9 +26,13 @@ def verify_simulator_configuration():
     assert general["*.sensor[*].forwarding"] == "true", "relay forwarding disabled"
     assert general["*.sensor[*].numApps"] == "1"
     assert general["*.sink.numApps"] == "1"
+    assert general["*.sensor[*].energyStorage.typename"] == '"SimpleEpEnergyStorage"'
+    assert general["*.sink.energyStorage.typename"] == '"SimpleEpEnergyStorage"'
+    assert general["**.energyStorage.nominalCapacity"] == "1000J"
     ned = (ROOT / "FarmNetwork.ned").read_text(encoding="utf-8")
     assert re.search(r"\bsensor\[12\]\s*:\s*SensorNode", ned), "network must have 12 sensors"
     assert re.search(r"\bsink\s*:\s*SensorNode", ned), "sink module missing"
+    assert len(re.findall(r"hasStatus\s*=\s*true", ned)) == 2, "sensor and sink need NodeStatus for finite energy storage"
     print("PASS: NED count and INI traffic, forwarding and 50m cap agree")
     return ini
 

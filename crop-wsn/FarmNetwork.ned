@@ -6,15 +6,19 @@ import inet.physicallayer.wireless.ieee802154.packetlevel.Ieee802154NarrowbandSc
 import inet.visualizer.canvas.integrated.IntegratedMultiCanvasVisualizer;
 
 // Twelve IEEE 802.15.4 sensor nodes and a single sink.
-// IP manual routes provide explicit MULTI-HOP forwarding, not ZigBee NWK.
+// IP manual routes provide explicit multi-hop forwarding, not ZigBee NWK.
 network FarmNetwork
 {
     @display("bgb=260,205");
     submodules:
         sink: SensorNode {
+            parameters:
+                hasStatus = true;
             @display("p=10,100;i=misc/sensorgateway");
         }
         sensor[12]: SensorNode {
+            parameters:
+                hasStatus = true;
             @display("p=60,100,row,65;i=misc/sensor2");
         }
         configurator: Ipv4NetworkConfigurator {
