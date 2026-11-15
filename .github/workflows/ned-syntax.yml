@@ -1,0 +1,29 @@
+name: OMNeT++ NED syntax validation
+
+on:
+  push:
+    paths:
+      - 'crop-wsn/*.ned'
+      - '.github/workflows/ned-syntax.yml'
+  pull_request:
+    paths:
+      - 'crop-wsn/*.ned'
+      - '.github/workflows/ned-syntax.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ned:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse the project NED sources with OMNeT++ (no INET build)
+        run: |
+          docker run --rm \
+            -v "$GITHUB_WORKSPACE:/root/models:ro" \
+            -w /root/models \
+            ghcr.io/omnetpp/omnetpp:u24.04-6.3.0 \
+            bash -lc 'opp_nedtool validate crop-wsn'
