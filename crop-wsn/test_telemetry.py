@@ -20,8 +20,8 @@ class TelemetryValidationTests(unittest.TestCase):
             count = 3 if i == missing_sensor else n
             lines.append(f"scalar FarmNetwork.sink.app[0] {prefix}DecodedPackets {count}")
             for name, value in (("MeanTemperatureC", 24.5), ("MeanRelativeHumidityPct", 55.0), ("MeanSoilMoisturePct", 38.0)):
-                if not (corrupt_value and i == 0 and name == "MeanSoilMoisturePct"):
-                    lines.append(f"scalar FarmNetwork.sink.app[0] {prefix}{name} {150 if corrupt_value and i == 0 and name == 'MeanSoilMoisturePct' else value}")
+                actual = 150 if corrupt_value and i == 0 and name == "MeanSoilMoisturePct" else value
+                lines.append(f"scalar FarmNetwork.sink.app[0] {prefix}{name} {actual}")
         lines.extend([
             "scalar FarmNetwork.sink.app[0] packetReceived:count 48",
             "scalar FarmNetwork.sink.app[0] decodedTelemetryPackets 48",
@@ -40,7 +40,7 @@ class TelemetryValidationTests(unittest.TestCase):
         self.assertEqual(result["sink_mean_values"]["mean_temperature_c"], 24.5)
 
     def test_missing_sensor_packets_rejected(self):
-        with self.assertRaisesRegex(ValueError, "decoded 3; expected 4"):
+        with self.assertRaisesRegex(ValueError, r"decoded 3(?:\.0)?; expected 4"):
             validate(self.fixture(missing_sensor=4), 4)
 
     def test_out_of_range_measurement_rejected(self):
