@@ -1,0 +1,44 @@
+name: OMNeT++ framework smoke test
+
+on:
+  push:
+    paths:
+      - 'smoke/**'
+      - '.github/workflows/omnetpp-smoke.yml'
+  pull_request:
+    paths:
+      - 'smoke/**'
+      - '.github/workflows/omnetpp-smoke.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    name: Build, run and verify wired smoke network
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Check out project
+        uses: actions/checkout@v4
+
+      - name: Build and run using official OMNeT++ 6.4.0 image
+        run: |
+          docker run --rm \
+            --volume "$GITHUB_WORKSPACE:/root/models" \
+            --workdir /root/models/smoke \
+            ghcr.io/omnetpp/omnetpp:u26.04-6.4.0 \
+            bash -lc 'bash run.sh'
+
+      - name: Assert packet counts from OMNeT++ result file
+        run: python3 smoke/verify_results.py smoke/results
+
+      - name: Upload raw scalar evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-scalars
+          path: smoke/results/*.sca
+          if-no-files-found: warn
+          retention-days: 14
