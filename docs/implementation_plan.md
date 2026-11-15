@@ -75,3 +75,16 @@ Metrics parser: 3 synthetic-fixture unit tests PASSED in run 43664678667 (these 
 - Independent full-run MAC counter audit performed on raw .sca files for both scenarios: expected and measured aggregate per-node MAC TX/RX counts match, sink MAC RX = 48, no missed ACKs or dropped frames. Reproduction is added to the run script.
 - Energy is modeled radio-state energy only (not CPU/sensor-board power). Current upper layers are manually routed IPv4, not a ZigBee NWK/APS stack. Generic telemetry still needs actual temperature/humidity/soil fields.
 - Outstanding: implement/obtain ZigBee-compatible NWK model, encode crop readings, empirically validate 50m boundary, import a real map and capture screenshots, prepare Word/PDF report, 5–6 slides and 5-minute demo.
+
+
+## Crop telemetry implementation update — 15 November 2026
+
+- Added `CropTelemetryApp` and `CropTelemetrySink` as project-specific INET applications.
+- The application payload is now a **versioned 13-byte binary record**: version, sensor ID, sequence number, temperature (centi-degrees C), relative humidity (centi-percent), soil moisture (centi-percent), and simulation timestamp (milliseconds). This avoids the earlier oversized text payload and is more suitable for IEEE 802.15.4 frame budgets.
+- The sink validates payload version, size, sensor ID, measurement ranges and duplicate sample sequence numbers, then records per-sensor and aggregate mean values.
+- Added `verify_telemetry.py` and telemetry parser unit tests. These validate simulator-generated scalar output; synthetic test fixtures are not measurements.
+- Static workflow [43673119952](https://github.com/assemalqudami-maker/Smart_Crop_Monitoring_WSN/actions/runs/43673119952) passed **all 16 Python unit tests** and topology validation after the telemetry application was added.
+- OMNeT++ NED syntax workflow [43672007632](https://github.com/assemalqudami-maker/Smart_Crop_Monitoring_WSN/actions/runs/43672007632) passed, but that run predates the latest telemetry C++ commit.
+- Full INET workflow [43673119960](https://github.com/assemalqudami-maker/Smart_Crop_Monitoring_WSN/actions/runs/43673119960) was queued at last check. **The new C++ application has not yet been confirmed compiled or executed.** Its telemetry output and updated full-run metrics remain unverified.
+- Earlier 930-second performance results apply to the previous generic UDP payload implementation, not yet to this new binary crop-telemetry application. Re-run both scenarios and replace the final table only after the new workflow passes.
+- ZigBee NWK/APS remains a separate unresolved requirement: the current stack is IEEE 802.15.4 PHY/MAC plus manually routed IPv4, not full ZigBee.

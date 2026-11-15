@@ -15,7 +15,7 @@ The final report will compare *initial* and *optimized* scenarios using:
 
 ## Current implementation state
 
-**Current status (15 November 2026):** Both full 930-second IEEE 802.15.4 farm scenarios have completed successfully. Each delivered 48/48 packets. Measured modeled radio energy fell from 0.315161 J to 0.301669 J (4.2812%), and mean delay fell from 12.568406 ms to 11.560303 ms (8.0209%). Full-run MAC counters for both scenarios match the configured multi-hop tree. See [full experiment evidence](docs/verified_full_experiment.md) and [project plan](docs/implementation_plan.md). The implementation still uses IPv4 above IEEE 802.15.4, not full ZigBee, and generic packets still need crop-reading fields.
+**Current status (15 November 2026):** The previous generic-payload 930-second IEEE 802.15.4 runs completed successfully (48/48 packets in both scenarios; PDR 100%; modeled radio energy 0.315161 J vs 0.301669 J; mean delay 12.568406 ms vs 11.560303 ms). A new project-specific crop telemetry application now encodes temperature, relative humidity and soil moisture in a 13-byte versioned binary payload. Its C++ build and simulation are **pending the latest INET GitHub Actions run**, so the previous performance table must not yet be attributed to the new telemetry application. The current network layer is manually routed IPv4, not full ZigBee. See [full previous experiment evidence](docs/verified_full_experiment.md) and [project plan](docs/implementation_plan.md).
 
 **Important protocol distinction:** IEEE 802.15.4 PHY/MAC (provided by INET) is **not** a complete ZigBee protocol stack. We will explicitly verify the network/routing layers before describing the implementation as ZigBee. No measured numbers will be fabricated.
 
