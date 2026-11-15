@@ -1,0 +1,42 @@
+name: Diagnose prior INET crop scalars without recompiling
+
+on:
+  push:
+    paths:
+      - '.github/workflows/diagnose-inet-scalars.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download actual 30-second crop simulation artifact from run 43664625600
+        uses: actions/download-artifact@v4
+        with:
+          name: inet-radio-upstream-results
+          run-id: 43664625600
+          github-token: ${{ github.token }}
+          path: recovered
+      - name: Identify real scalar names and source/sink counters
+        shell: bash
+        run: |
+          set -eu
+          find recovered -maxdepth 6 -type f | sort
+          CROP_FILE="$(find recovered -name Initial.sca -type f -print -quit)"
+          test -n "$CROP_FILE"
+          echo "== ORIGINAL CROP SCALAR CONTENTS =="
+          wc -l "$CROP_FILE"
+          grep '^scalar ' "$CROP_FILE" | head -70 || true
+          echo "== APP PACKET COUNTERS AND DELAY =="
+          grep -E '^(scalar|statistic) .*\.(app|udp|energyStorage|ipv4)' "$CROP_FILE" | grep -E '(packetSent|packetReceived|Delay|Capacity|drop|sent|received)' | head -100 || true
+          echo "== COUNTS =="
+          grep -c '^scalar ' "$CROP_FILE" || true
+          grep -c '^statistic ' "$CROP_FILE" || true
+          echo "== DIRECT ANALYSIS ATTEMPT =="
+          python3 crop-wsn/analyze_results.py "$CROP_FILE" || true
