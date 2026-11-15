@@ -26,3 +26,27 @@ A 10–12-sensor WSN (we will use 12) must use ZigBee communication, 50 m transm
 
 ## Scope of the current smoke test
 The wired 3-source/1-sink model confirms only compilation, execution and scalar production. It provides **no wireless, ZigBee, radio range, energy, collision or multi-hop evidence**.
+
+## Additional model research — 15 November 2026
+
+### INET finding
+The official INET 4.6 guide states that IEEE 802.15.4 specifies PHY and MAC, while ZigBee adds upper layers beyond those. Therefore the current `Ieee802154NarrowbandInterface` plus manually routed IPv4 is an IEEE 802.15.4 WSN simulation, not a standards-complete ZigBee stack.
+
+### Candidate ZigBee implementations reviewed
+- `Shtrikh17/ZigBee-attacks-model` (2017-era OMNeT++ code) contains a simplified ZigBee-like NWK/AODV model, but its normal mesh code passes custom MAC-frame objects over direct module gates and explicitly describes the MAC interface as a future replacement. It is not an integrated, validated INET PHY/MAC + ZigBee stack for our current model. Do not simply label it full ZigBee or combine it without substantial engineering and verification.
+- A repository named `YuuFii/Simple_Zigbee_Star_Simulation` contains only a bundled ZIP and has not yet been audited for version compatibility, mesh support, or protocol completeness. It is not an approved dependency.
+- **CupCarbon Klaines 8.3** official documentation describes its discrete-event WSN engine as supporting ZigBee, Wi-Fi and LoRa, OSM map backgrounds, radio propagation, interference, mobility, energy and battery models. This is currently the strongest candidate if the instructor requires a simulator with native ZigBee and imported-map support.
+
+### Decision gate
+Keep OMNeT++/INET for the current verified wireless and performance experiments, but **do not claim the ZigBee requirement is met**. Before final submission, either:
+1. obtain explicit instructor approval to accept IEEE 802.15.4 PHY/MAC with a documented custom/manual routing layer as the project communication implementation; or
+2. port the final required WSN demonstration and metrics to a simulator/model that actually provides ZigBee (CupCarbon is the first candidate), preserving GitHub as the source/evidence repository.
+
+No final report should describe the current model as ZigBee until this gate is resolved.
+
+### Public references
+- INET 4.6 IEEE 802.15.4 guide: https://inet.omnetpp.org/docs/users-guide/ch-802154.html
+- CupCarbon Klaines official help: https://cupcarbon.com/help.html
+- CupCarbon official site: https://www.cupcarbon.com/
+- Simplified third-party NWK research model: https://github.com/Shtrikh17/ZigBee-attacks-model
+- Third-party bundled OMNeT++ project, not yet audited: https://github.com/YuuFii/Simple_Zigbee_Star_Simulation
