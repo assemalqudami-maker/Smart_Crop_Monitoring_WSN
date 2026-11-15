@@ -36,4 +36,4 @@ Keep the total simulated time, node population, traffic assumptions, channel mod
 
 ## Current gate
 
-Gate 0: initialized. Gate 1: scaffold only, until an actual OMNeT++ run is verified.
+Gate 0: initialized. Gate 1: CI execution required; target OMNeT++ 6.3.0 / INET 4.6.0, subject to verification.
