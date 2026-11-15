@@ -13,6 +13,9 @@ on:
       - 'crop-wsn/CropTelemetryModules.ned'
       - 'crop-wsn/verify_telemetry.py'
       - 'crop-wsn/verify_multihop.py'
+      - 'crop-wsn/verify_range.py'
+      - 'crop-wsn/telemetry_codec.py'
+      - 'crop-wsn/test_telemetry_codec.py'
       - '.github/workflows/inet-radio.yml'
   workflow_dispatch:
 

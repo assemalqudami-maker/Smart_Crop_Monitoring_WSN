@@ -56,10 +56,10 @@ class CropTelemetryApp : public UdpBasicApp
         const int sensorId = par("sensorId").intValue();
         const int sequence = numSent;
         const double temperatureC = par("baseTemperatureC").doubleValue() + 0.15 * sequence;
-        const double humidityPct = std::clamp(
-            par("baseHumidityPct").doubleValue() - 0.20 * sequence, 0.0, 100.0);
-        const double soilMoisturePct = std::clamp(
-            par("baseSoilMoisturePct").doubleValue() + 0.35 * sequence, 0.0, 100.0);
+        const double humidityPct = std::max(0.0, std::min(100.0,
+            par("baseHumidityPct").doubleValue() - 0.20 * sequence));
+        const double soilMoisturePct = std::max(0.0, std::min(100.0,
+            par("baseSoilMoisturePct").doubleValue() + 0.35 * sequence));
 
         if (sensorId < 0 || sensorId > 255 || sequence < 0 || sequence > 255)
             throw cRuntimeError("Crop telemetry sensor ID/sequence does not fit uint8");

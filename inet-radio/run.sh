@@ -50,17 +50,32 @@ CUSTOM_LIB_BASE="${CUSTOM_LIB%libcropwsn.so}cropwsn"
 export LD_LIBRARY_PATH="$UPSTREAM_DIR/src:$(dirname "$CUSTOM_LIB"):$CROP_DIR:${LD_LIBRARY_PATH:-}"
 echo "Custom model library: $CUSTOM_LIB"
 echo "Running 30-second crop telemetry decoding smoke test"
-inet --release -l "$CUSTOM_LIB_BASE" -u Cmdenv -n "$CROP_DIR" -c TelemetrySmoke -f omnetpp.ini \
+inet --release -l "$CUSTOM_LIB_BASE" -u Cmdenv -n "$CROP_DIR:$UPSTREAM_DIR/src" -c TelemetrySmoke -f omnetpp.ini \
   --sim-time-limit=30s \
   --output-scalar-file="$CROP_DIR/results/TelemetrySmoke.sca" \
   --output-vector-file="$CROP_DIR/results/TelemetrySmoke.vec"
 python3 verify_telemetry.py "$CROP_DIR/results/TelemetrySmoke.sca" \
   --expected-per-sensor 1 --output "$CROP_DIR/results/TelemetrySmoke-telemetry.json"
+
+# Empirical direct-link range boundary tests: 49m and 50m should pass; 51m should fail.
+for distance in 49 50 51; do
+  cfg="Range${distance}"
+  expected=1
+  if [[ "$distance" -eq 51 ]]; then expected=0; fi
+  echo "Testing IEEE 802.15.4 direct-link boundary at ${distance}m"
+  inet --release -l "$CUSTOM_LIB_BASE" -u Cmdenv -n "$CROP_DIR:$UPSTREAM_DIR/src" -c "$cfg" -f omnetpp.ini \\
+    --sim-time-limit=30s \\
+    --output-scalar-file="$CROP_DIR/results/${cfg}.sca" \\
+    --output-vector-file="$CROP_DIR/results/${cfg}.vec"
+  python3 verify_range.py "$CROP_DIR/results/${cfg}.sca" \\
+    --distance "$distance" --expected-delivered "$expected" \\
+    --output "$CROP_DIR/results/${cfg}-range.json"
+done
 # Complete 930-second run: first sample in 1-5 s, then at +300, +600, +900 s.
 # Never use a short diagnostic run to generate the final comparative results.
 for cfg in Initial Optimized; do
   echo "Running crop WSN: $cfg (FULL 930 simulated seconds)"
-  inet --release -l "$CUSTOM_LIB_BASE" -u Cmdenv -n "$CROP_DIR" -c "$cfg" -f omnetpp.ini \
+  inet --release -l "$CUSTOM_LIB_BASE" -u Cmdenv -n "$CROP_DIR:$UPSTREAM_DIR/src" -c "$cfg" -f omnetpp.ini \
     --sim-time-limit=930s \
     --output-scalar-file="$CROP_DIR/results/${cfg}.sca" \
     --output-vector-file="$CROP_DIR/results/${cfg}.vec"
