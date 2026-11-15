@@ -44,4 +44,4 @@ jobs:
             crop-wsn/results/*.json
             crop-wsn/results/*.csv
           if-no-files-found: warn
-          retention-days: 14
+          retention-days: 45
