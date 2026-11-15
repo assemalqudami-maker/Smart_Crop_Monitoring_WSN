@@ -42,7 +42,7 @@ def main():
     paths = {}
     for scenario, xmlfile in (("Initial", "routes-initial.xml"), ("Optimized", "routes-optimized.xml")):
         scoped = {r["node"]: r for r in rows if r["scenario"] == scenario}
-        section = ini[scenario]
+        section = ini[f"Config {scenario}"]
         for idx in range(12):
             expected = scoped[f"sensor[{idx}]"]
             for axis, col in (("X", "x_m"), ("Y", "y_m")):
