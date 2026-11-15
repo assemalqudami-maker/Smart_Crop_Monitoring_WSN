@@ -1,0 +1,26 @@
+name: Farm topology static validation
+
+on:
+  push:
+    paths:
+      - 'crop-wsn/**'
+      - '.github/workflows/farm-static.yml'
+  pull_request:
+    paths:
+      - 'crop-wsn/**'
+      - '.github/workflows/farm-static.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  topology:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check 12 sensor nodes, 1 sink, loop-free next hops and 50m links
+        run: python3 crop-wsn/verify_layout.py
+      - name: Syntax-check result analyzer
+        run: python3 -m py_compile crop-wsn/analyze_results.py
