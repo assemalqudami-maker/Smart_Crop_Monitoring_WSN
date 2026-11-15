@@ -27,8 +27,8 @@ def verify_simulator_configuration():
     assert general["*.sensor[*].numApps"] == "1"
     assert general["*.sink.numApps"] == "1"
     ned = (ROOT / "FarmNetwork.ned").read_text(encoding="utf-8")
-    assert re.search(r"\\bsensor\\[12\\]\\s*:\\s*SensorNode", ned), "network must have 12 sensors"
-    assert re.search(r"\\bsink\\s*:\\s*SensorNode", ned), "sink module missing"
+    assert re.search(r"\bsensor\[12\]\s*:\s*SensorNode", ned), "network must have 12 sensors"
+    assert re.search(r"\bsink\s*:\s*SensorNode", ned), "sink module missing"
     print("PASS: NED count and INI traffic, forwarding and 50m cap agree")
     return ini
 
