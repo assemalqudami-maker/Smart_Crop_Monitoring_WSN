@@ -33,7 +33,20 @@ def verify_simulator_configuration():
     assert re.search(r"\bsensor\[12\]\s*:\s*SensorNode", ned), "network must have 12 sensors"
     assert re.search(r"\bsink\s*:\s*SensorNode", ned), "sink module missing"
     assert len(re.findall(r"hasStatus\s*=\s*true", ned)) == 2, "sensor and sink need NodeStatus for finite energy storage"
-    print("PASS: NED count and INI traffic, forwarding and 50m cap agree")
+    # Direct-link boundary scenarios must place sensor[0] at 49/50/51m
+    # from the sink (10m, 100m); the medium cap is fixed at 50m.
+    for distance in (49, 50, 51):
+        section = ini[f"Config Range{distance}"]
+        actual_x = float(section["*.sensor[0].mobility.initialX"].removesuffix("m"))
+        actual_y = float(section["*.sensor[0].mobility.initialY"].removesuffix("m"))
+        sink_x = float(general["*.sink.mobility.initialX"].removesuffix("m"))
+        sink_y = float(general["*.sink.mobility.initialY"].removesuffix("m"))
+        actual_distance = math.hypot(actual_x - sink_x, actual_y - sink_y)
+        if abs(actual_distance - distance) > 1e-9:
+            raise AssertionError(f"Range{distance}: sensor-to-sink distance is {actual_distance}")
+        if section["sim-time-limit"] != "30s":
+            raise AssertionError(f"Range{distance}: boundary test must be 30s")
+    print("PASS: NED count, INI traffic, forwarding, 50m cap and 49/50/51m test geometry agree")
     return ini
 
 

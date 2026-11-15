@@ -88,3 +88,13 @@ Metrics parser: 3 synthetic-fixture unit tests PASSED in run 43664678667 (these 
 - Full INET workflow [43673119960](https://github.com/assemalqudami-maker/Smart_Crop_Monitoring_WSN/actions/runs/43673119960) was queued at last check. **The new C++ application has not yet been confirmed compiled or executed.** Its telemetry output and updated full-run metrics remain unverified.
 - Earlier 930-second performance results apply to the previous generic UDP payload implementation, not yet to this new binary crop-telemetry application. Re-run both scenarios and replace the final table only after the new workflow passes.
 - ZigBee NWK/APS remains a separate unresolved requirement: the current stack is IEEE 802.15.4 PHY/MAC plus manually routed IPv4, not full ZigBee.
+
+## Telemetry and range-test update — 15 November 2026
+
+- Added empirical direct-link boundary scenarios `Range49`, `Range50`, and `Range51`. They place sensor[0] at the specified distance from the sink and keep the radio medium communication-range cap at 50 m. The run script expects delivery at 49/50 m and no delivery at 51 m; these are expectations to be verified by the upcoming radio workflow, not claimed outcomes.
+- Added `verify_range.py` to validate actual sent/received counters from each boundary-run scalar file.
+- Added a Python reference codec matching the C++ 13-byte CropTelemetry v1 binary layout and four additional round-trip/validation tests.
+- Replaced `std::clamp` with equivalent `std::max/std::min` to avoid requiring C++17 from the INET build environment.
+- Static validation run [43674241542](https://github.com/assemalqudami-maker/Smart_Crop_Monitoring_WSN/actions/runs/43674241542) passed **20/20 unit tests** and topology checks, including codec tests.
+- Latest INET build/run [43674241548](https://github.com/assemalqudami-maker/Smart_Crop_Monitoring_WSN/actions/runs/43674241548) was still in progress at last check. No successful C++ compilation, telemetry smoke test, or 49/50/51 m radio boundary result is claimed yet.
+- CupCarbon remains a pilot candidate only; it has not been installed or validated for the complete rubric.
