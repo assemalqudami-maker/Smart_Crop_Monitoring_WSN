@@ -23,12 +23,12 @@ jobs:
       - name: Check out project
         uses: actions/checkout@v4
 
-      - name: Build and run using official OMNeT++ 6.4.0 image
+      - name: Build and run using official OMNeT++ 6.3.0 image
         run: |
           docker run --rm \
             --volume "$GITHUB_WORKSPACE:/root/models" \
             --workdir /root/models/smoke \
-            ghcr.io/omnetpp/omnetpp:u26.04-6.4.0 \
+            ghcr.io/omnetpp/omnetpp:u24.04-6.3.0 \
             bash -lc 'bash run.sh'
 
       - name: Assert packet counts from OMNeT++ result file
