@@ -1,0 +1,37 @@
+name: INET IEEE 802.15.4 upstream feasibility
+
+on:
+  push:
+    paths:
+      - 'inet-radio/**'
+      - '.github/workflows/inet-radio.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  radio:
+    name: Compile INET 4.6 and run official 802.15.4 example
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run upstream showcase with official OMNeT++ image
+        run: |
+          mkdir -p inet-radio/results
+          docker run --rm \
+            -v "$GITHUB_WORKSPACE:/root/models" \
+            -w /root/models \
+            ghcr.io/omnetpp/omnetpp:u24.04-6.3.0 \
+            bash -lc 'bash inet-radio/run.sh'
+      - name: Upload raw upstream radio evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: inet-radio-upstream-results
+          path: |
+            inet-radio/results/*.sca
+            inet-radio/results/*.vec
+          if-no-files-found: warn
+          retention-days: 14
