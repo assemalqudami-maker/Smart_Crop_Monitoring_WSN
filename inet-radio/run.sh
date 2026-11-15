@@ -15,7 +15,9 @@ if [[ ! -d "$UPSTREAM_DIR/.git" ]]; then
   git clone --depth 1 --branch v4.6.0 https://github.com/inet-framework/inet.git "$UPSTREAM_DIR"
 fi
 cd "$UPSTREAM_DIR"
+set +u
 source setenv -q
+set -u
 make MODE=release -j2
 
 mkdir -p "$RESULT_DIR"
